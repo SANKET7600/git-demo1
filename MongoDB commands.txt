@@ -1,0 +1,173 @@
+// ---------- 1. SHOW DATABASES ----------
+show dbs
+// Shows all existing databases
+
+
+// ---------- 2. CREATE / SWITCH DATABASE ----------
+use UniDB
+// If database doesn't exist → it will be created when you insert data
+
+
+// ---------- 3. CHECK CURRENT DATABASE ----------
+db 
+// Shows current database name
+
+
+// ---------- 4. CREATE COLLECTION ----------
+db.createCollection("students")
+// Explicitly creates a collection  OR automatically created when inserting data
+
+
+// ---------- 5. SHOW COLLECTIONS ----------
+show collections
+
+
+// ---------- 6. INSERT DOCUMENT (CREATE) ----------
+
+// Insert one document
+db.students.insertOne({
+    name: "Sakir",
+    age: 25,
+    course: "Data Science"
+})
+
+// Insert multiple documents
+db.students.insertMany([
+    { name: "Aman", age: 22, course: "Python" },
+    { name: "Ravi", age: 24, course: "SQL" },
+    { name: "Neha", age: 23, course: "ML" }
+])
+
+
+// ---------- 7. READ (SELECT DATA) ----------
+
+// Fetch all documents
+db.students.find()
+
+// Pretty format (clean output)
+db.students.find().pretty()
+
+// Filter data (WHERE condition)
+db.students.find({ age: 25 })
+
+// Multiple condition (AND)
+db.students.find({ age: 24, course: "SQL" })
+
+
+// ---------- 8. COMPARISON OPERATORS ----------
+
+// Greater than
+db.students.find({ age: { $gt: 23 } })
+
+// Less than
+db.students.find({ age: { $lt: 25 } })
+
+// Greater than equal
+db.students.find({ age: { $gte: 24 } })
+
+// Not equal
+db.students.find({ age: { $ne: 22 } })
+
+
+// ---------- 9. LOGICAL OPERATORS ----------
+
+// AND condition
+db.students.find({
+    $and: [
+        { age: { $gt: 22 } },
+        { course: "Python" }
+    ]
+})
+
+// OR condition
+db.students.find({
+    $or: [
+        { age: 22 },
+        { course: "ML" }
+    ]
+})
+
+
+// ---------- 10. PROJECTION (SELECT COLUMNS) ----------
+
+// Show only name and course
+db.students.find({}, { name: 1, course: 1, _id: 0 })
+
+
+// ---------- 11. UPDATE DATA ----------
+
+// Update one document
+db.students.updateOne(
+    { name: "Sakir" },
+    { $set: { age: 26 } }
+)
+
+// Update multiple documents
+db.students.updateMany(
+    { course: "Python" },
+    { $set: { course: "Advanced Python" } }
+)
+
+
+// ---------- 12. DELETE DATA ----------
+
+// Delete one document
+db.students.deleteOne({ name: "Ravi" })
+
+// Delete multiple documents
+db.students.deleteMany({ age: { $lt: 23 } })
+
+
+// ---------- 13. SORTING ----------
+
+// Ascending order
+db.students.find().sort({ age: 1 })
+
+// Descending order
+db.students.find().sort({ age: -1 })
+
+
+// ---------- 14. LIMIT ----------
+
+// Limit results
+db.students.find().limit(2)
+
+
+// ---------- 15. COUNT ----------
+
+// Count documents
+db.students.countDocuments()
+
+
+// ---------- 16. DROP COLLECTION ----------
+
+db.students.drop()
+
+
+// ---------- 17. DROP DATABASE ----------
+
+db.dropDatabase()
+
+
+// ==============================
+// IMPORTANT RULES (REMEMBER)
+// ==============================
+
+// 1. MongoDB is case-sensitive
+// 2. Documents are JSON-like (BSON internally)
+// 3. _id is automatically created (primary key)
+// 4. Schema is flexible (no fixed columns)
+// 5. Use $ operators for conditions ($gt, $lt, etc.)
+// 6. Collections are created automatically on insert
+// 7. Always use $set when updating fields
+
+
+// ==============================
+// COMMON MISTAKES 
+// ==============================
+
+// ❌ Forgetting $set in update
+// ❌ Using SQL syntax (SELECT * FROM)
+// ❌ Not understanding JSON format
+// ❌ Confusing collection vs database
+// ❌ Forgetting quotes for strings
